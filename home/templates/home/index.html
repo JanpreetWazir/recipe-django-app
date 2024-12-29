@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .home-container {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa; /* Light background for better readability */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds some subtle shadow for depth */
+        }
+
+        .home-container h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333; /* Darker text for contrast */
+        }
+
+        .links-container, .auth-links {
+            margin-top: 20px;
+        }
+
+        .nav-link, .auth-link {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 10px 15px;
+            background-color: #007bff; /* Primary color for buttons */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover, .auth-link:hover {
+            background-color: #0056b3; /* Darker shade of blue on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="home-container">
+        <h2>Welcome to Our Website</h2>
+        <p>This is a Home Page</p>
+        <div class="links-container">
+            <a href="/receipe/" class="nav-link">Receipe</a>
+            <a href="/contact/" class="nav-link">Contact</a>
+        </div>
+
+        <div class="auth-links">
+            {% if request.user.is_authenticated %}
+                <a href="/logout/" class="auth-link">Logout</a>
+            {% else %}
+                <a href="/login/" class="auth-link">Login</a>
+                <a href="/signup/" class="auth-link">Sign-up</a>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

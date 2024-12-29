@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Update Recipe</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="receipe-name">Recipe Name:</label>
+            <input type="text" id="receipe-name" name="receipe_name" value="{{ receipe.receipe_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="receipe-description">Description:</label>
+            <textarea id="receipe-description" name="receipe_description" rows="4" required>{{ receipe.receipe_description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="receipe-image">Upload Recipe Image:</label>
+            <input type="file" id="receipe-image" name="receipe_image" accept="image/*">
+        </div>
+        <div class="form-group">
+            <button type="submit">Update Recipe</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

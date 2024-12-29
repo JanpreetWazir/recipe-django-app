@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .form-group input[type="text"], 
+        .form-group textarea, 
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+
+        .form-group textarea {
+            resize: none;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: white;
+            color: black;
+        }
+
+        img {
+            width: 100px;
+            height: auto;
+        }
+
+        .btn-danger {
+            color: white;
+            background-color: red;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover {
+            background-color: darkred;
+        }
+
+        .btn-success {
+            color: white;
+            background-color: green;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn-success:hover {
+            background-color: darkcyan;
+        }
+
+        .search-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 8px;
+            width: 200px;
+        }
+
+        .search-container button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <form method="get" action="/receipe"> <!-- or action="/search" -->
+            <input type="text" name="search" placeholder="Search recipes..." >
+            <button type="submit">Search</button>
+        </form>
+    </div>
+<a href="/logout/">Logout</a>    
+<a href="/">Home</a> | <a href="/contact">Contact</a>
+
+<div class="form-container">
+    <h2>Submit Your Recipe</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="receipe-name">Recipe Name:</label>
+            <input type="text" id="receipe-name" name="receipe_name" placeholder="Enter recipe name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="receipe-description">Description:</label>
+            <textarea id="receipe-description" name="receipe_description" placeholder="Enter recipe description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="receipe-image">Upload Recipe Image:</label>
+            <input type="file" id="receipe-image" name="receipe_image" accept="image/*" required>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit">Submit Recipe</button>
+        </div>
+    </form>
+</div>
+
+<h2>Submitted Recipes</h2>
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Recipe Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in receipe %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ r.receipe_name }}</td>
+            <td>{{ r.receipe_description }}</td>
+            <td><img src="{{ r.receipe_image.url }}" alt="{{ r.receipe_name }}"></td>
+            <td>
+                <a href="{% url 'delete_receipe' r.id %}" class="btn-danger">DELETE</a>
+                <br>
+                <br>
+                <a href="/update_receipe/{{r.id}}" class="btn-success">UPDATE</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No recipes submitted yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
